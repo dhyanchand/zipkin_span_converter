@@ -1,0 +1,25 @@
+1. mvn package (if you want to compile and run)
+    1.1 you may simply use the binary version by executing: java -jar bin/span_parser.jar 
+    1.2 if you do mvn package (with modifications to code), manually copy over target/span_parser.jar to bin/span_parser.jar, *before* you run any of {2,3,4}
+
+2.Convert a thrift Span.toString() string to a Span object and writes output as base64 encoded string
+    example: java -jar bin/span_parser.jar -r -fdata/test_simple_trace -odata/test_simple_base64
+
+3.Convert base64encoded thrift string to a Span object and writes output as plain string 
+    example: java -jar bin/span_parser.jar  -fdata/test_simple_base64 -odata/test_simple_converted
+
+4.To simplify things two functions in the script thrift.sh can help 
+    4.1 first source thrift.sh (say, ". ./thrift.sh")
+    4.2 then you can simply run: plain2base64 data/test_simple_trace data/test_simple_base64
+    4.3 and then: base2plain data/test_simple_base64 data/test_simple_converted
+    4.4 do : diff data/test_simple_converted data/test_simple_trace
+    4.5 to test everything do: plain2base64 data/test_simple_converted data/test_simple_base64_converted
+    4.6 do: diff data/test_simple_base64 data/test_simple_base64_converted
+
+5.Sample files are in the "data" folder:
+    5.1 test_simple_trace, test_trace_with_debug, test_trace_with_multiple_annotations
+
+6.CAVEAT EMPTOR: 
+    6.1 if you start with plain text and your file contain commas "," separated by more than one space on either end, the diffs don't match
+    6.2 please contribute other issues
+
